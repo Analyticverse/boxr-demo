@@ -47,7 +47,7 @@ references: <https://r-box.github.io/boxr/reference/box_read.html>
 
 ```{r, message=FALSE}
 file_id <- 1276177883594
-df <- boxr::box_read_csv(version_no=)
+df <- boxr::box_read_csv(file_id=file_id)
 print(df[1:4,1:4]) # Let's just look a few rows/columns
 ```
 
