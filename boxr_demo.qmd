@@ -1,0 +1,56 @@
+---
+title: "Access Box from R"
+author: "Jake Peters"
+date-modified: Nov. 13, 2023
+format: html
+editor: visual
+---
+
+::: callout-note
+This tutorial contains only test data from our stage environment. No actual participant data is used.
+:::
+
+## 0. Set up a Box app
+
+In order to use the boxr library to retrieve data from file on box.com, you must first create a "Custom App" in the Box developers console, here: <https://app.box.com/developers/console>.
+
+If you don't know how to do this, the boxr developers have documented a simple use case here: <https://ijlyttle.github.io/boxr/articles/boxr.html#accessing-box-files>. Follow, steps 1-3 in the *Auth orization from a local computer* section.
+
+NOTE: If you are using an enterprise account, your Box-admin team may need to do these steps for you.
+
+## 1. Authenticate
+
+Use boxr::box_auth() to authenticate. You will be prompted to enter the client_id and client_secret from your box app if this is your first time. The client_id and client_secret will be stored in your .Renviron file thereafter. If the client_id and client_secret are already available, you will simply be prompted to log in to box.com using a pop-up window.
+
+reference: [https://ijlyttle.github.io/boxr/articles/boxr.html#accessing-box-files](#0)
+
+```{r}
+library(boxr)
+boxr::box_auth()
+```
+
+::: callout-warning
+## Don't include your client_id and client_secret directly in your R script, especially if you plan to push it to GitHub.
+:::
+
+## 2. Locate your file_id
+
+boxr is a powerful library that can read, write and manipulate data in box.com if the box app that you are using is given sufficient permissions. However, for the purposes of reading in a file, you only need the `box_read_csv()` function. This function takes `file_id` as an argument, where `file_id` is a unique 13-digit number that represents your file. To locate this number, open the file of interest in box.com and copy the number from the url as shown below.
+
+![Grab the file_id from the url associated with your file.](images/file_id.png)
+
+## 3. Load the data
+
+Read in the CSV file from box.com using the `file_id`. `read_excel` is also available.
+
+references: <https://r-box.github.io/boxr/reference/box_read.html>
+
+```{r, message=FALSE}
+file_id <- 1276177883594
+df <- boxr::box_read_csv(version_no=)
+print(df[1:4,1:4]) # Let's just look a few rows/columns
+```
+
+::: callout-tip
+You can also specify the `version_id` or `version_no` if you would like to read in specific versions of the file.
+:::
